@@ -1,7 +1,7 @@
 # myqr
-## QR Code scanner for login hotspot MikroTik
+## QR Code scanner for login hotspot Apna WiFi
 
-### Cara pakai
+### 
 
 1. Tambahkan button di login.html
 ```html
@@ -14,4 +14,4 @@
 add action=accept comment="Mikhmon QR Code Scanner" disabled=no dst-host=laksa19.github.io
 ```
 
-### Powered by webqr.com
+### Powered by GoojDex
