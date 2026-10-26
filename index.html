@@ -13,6 +13,7 @@
             --bg-color: #f0fdfa;
             --text-main: #1e293b;
             --white: #ffffff;
+            --success: #10b981;
         }
         * {
             margin: 0;
@@ -95,6 +96,13 @@
             text-align: center;
             letter-spacing: 2px;
             font-weight: bold;
+            color: var(--success);
+        }
+        .loading-text {
+            margin-top: 1rem;
+            font-weight: bold;
+            color: var(--success);
+            display: none;
         }
     </style>
 </head>
@@ -114,9 +122,11 @@
 
         <!-- Result / Manual Input -->
         <div class="input-group">
-            <label for="scannedCode">Scanned / Entered Code</label>
-            <input type="text" id="scannedCode" placeholder="Code will appear here">
+            <label for="scannedCode">Scanned Code</label>
+            <input type="text" id="scannedCode" placeholder="Waiting for scan..." readonly>
         </div>
+
+        <div id="loadingText" class="loading-text">✅ Scanned! Logging in automatically...</div>
     </div>
 
     <script>
@@ -135,21 +145,26 @@
         function onScanSuccess(decodedText, decodedResult) {
             html5QrcodeScanner.clear();
             document.getElementById('qr-reader').style.display = 'none';
-            document.getElementById('start-qr-btn').style.display = 'flex';
 
+            let voucherCode = decodedText;
             try {
                 let url = new URL(decodedText);
                 let user = url.searchParams.get("username");
-                document.getElementById('scannedCode').value = user ? user : decodedText;
-            } catch(e) {
-                document.getElementById('scannedCode').value = decodedText;
-            }
-            
-            alert("Successfully Scanned: " + document.getElementById('scannedCode').value);
+                if (user) voucherCode = user;
+            } catch(e) {}
+
+            document.getElementById('scannedCode').value = voucherCode;
+            document.getElementById('loadingText').style.display = 'block';
+
+            // Automatic redirect to MikroTik router login page with the scanned voucher code
+            // (Apne router ka IP yahan check kar lein, aamtaur par 192.168.88.1 hota hai)
+            setTimeout(function() {
+                window.location.href = "http://apna.wifi/login?username=" + encodeURIComponent(voucherCode);
+            }, 800);
         }
 
         function onScanFailure(error) {
-            // Handle scan failure silently
+            // Silent error handler during scanning
         }
     </script>
 </body>
