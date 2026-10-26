@@ -1,92 +1,159 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="theme-color" content="#000000" />
-  
-<title>APNA WIFI QR CODE SCANNER</title>
-  <style>
-    body{
-      background-color: #000000;
-      color :#ffffff;
-    }
-    video {
-      width: 100%    !important;
-      height: auto   !important;
-    }
-    .btn{
-      margin-top:5px;
-      margin-bottom:10px;
-      padding:5px;
-      background-color: #f2f2f2;
-      color: #000000;
-      border-radius:3px;
-      width: 150px;
-      cursor: pointer;
-    }
-    .camera{
-      width: 95%;
-    }
-    a{
-      text-decoration: none;
-      color:#20a8d8;
-    }
-    @font-face {
-      font-family: 'fontello';
-      src: url('./font/fontello.eot?14907215');
-      src: url('./font/fontello.eot?14907215#iefix') format('embedded-opentype'),
-           url('./font/fontello.woff?14907215') format('woff'),
-           url('./font/fontello.ttf?14907215') format('truetype'),
-           url('./font/fontello.svg?14907215#fontello') format('svg');
-      font-weight: normal;
-      font-style: normal;
-    }
-    .icon
-    {
-      font-family: "fontello";
-      font-style: normal;
-      font-weight: normal;
-      speak: none;
-      display: inline-block;
-      text-decoration: inherit;
-      width: 1em;
-      margin-right: .2em;
-      text-align: center;
-      font-variant: normal;
-      text-transform: none;
-      line-height: 1em;
-      margin-left: .2em;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-  </style>
-<script type="text/javascript" src="llqrcode.js"></script>
-<script type="text/javascript" src="mikhmon_webqr.js?v1"></script>
-<script async src="https://arc.io/widget.min.js#rDZc6s4f"></script>  
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Scanner - Apna Wi-Fi</title>
+    <!-- html5-qrcode library CDN -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --primary-hover: #0284c7;
+            --bg-color: #f0fdfa;
+            --text-main: #1e293b;
+            --white: #ffffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .scanner-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        h2 {
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+        p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        #qr-reader {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+            display: none;
+        }
+        .btn {
+            width: 100%;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn:hover {
+            background: var(--primary-hover);
+        }
+        .input-group {
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <center>
-    <div id="main">
-      <div id="mainbody">
-        <div class="camera" id="outdiv"></div>
-        <div style="display: table;">
-          <div style="display: table-row;">
-            <div style="display: table-cell; padding:3px;">
-              <div class="btn" id="reload" onclick="location.reload();"><i class="icon icon-arrows-cw">&#xe800;</i> Reload Camera</div>
-            </div>
-            <div style="display: table-cell; padding:3px;">
-              <!-- <div class="btn" onclick="document.location = 'googlechrome://navigate?url=https://goojdex.github.io/myqr/';"></div> -->
-              <a class="btn" href="intent://goojdex.github.io/myqr#Intent;scheme=http;package=com.android.chrome;end"><i class="icon icon-chrome-1">&#xf268;</i> Open in Chrome</a>
-            </div>
-          </div>
+
+    <div class="scanner-box">
+        <h2>Scan Voucher QR Code</h2>
+        <p>Point your camera at the voucher QR code</p>
+
+        <!-- QR Camera Viewfinder -->
+        <div id="qr-reader"></div>
+
+        <!-- Start Scanner Button -->
+        <button type="button" class="btn" id="start-qr-btn" onclick="startQR()">
+            <span style="font-size: 1.2rem;">📷</span> Open Camera to Scan
+        </button>
+
+        <!-- Result / Manual Input -->
+        <div class="input-group">
+            <label for="scannedCode">Scanned / Entered Code</label>
+            <input type="text" id="scannedCode" placeholder="Code will appear here">
         </div>
-      </div>
     </div>
-    <div>APNA WIFI QR CODE SCANNER <br>Powered by <a href="http://www.webqr.com">GoojDex</a></div>
-  </center>
-<canvas style="display:none;" id="qr-canvas" width="800" height="600"></canvas>
-<script type="text/javascript">load();</script>
+
+    <script>
+        let html5QrcodeScanner = null;
+
+        function startQR() {
+            document.getElementById('qr-reader').style.display = 'block';
+            document.getElementById('start-qr-btn').style.display = 'none';
+
+            // Initializes the scanner using GitHub Pages HTTPS connection smoothly
+            html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", { fps: 10, qrbox: 250 }, false);
+            
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
+
+        function onScanSuccess(decodedText, decodedResult) {
+            // Stop scanner after successful scan
+            html5QrcodeScanner.clear();
+            document.getElementById('qr-reader').style.display = 'none';
+            document.getElementById('start-qr-btn').style.display = 'flex';
+
+            try {
+                // If QR contains a full URL, extract username parameter, else use raw text
+                let url = new URL(decodedText);
+                let user = url.searchParams.get("username");
+                document.getElementById('scannedCode').value = user ? user : decodedText;
+            } catch(e) {
+                document.getElementById('scannedCode').value = decodedText;
+            }
+            
+            alert("Successfully Scanned: " + document.getElementById('scannedCode').value);
+        }
+
+        function onScanFailure(error) {
+            // Handle scan failure silently to avoid console spam during continuous scanning
+        }
+    </script>
 </body>
 </html>
-
