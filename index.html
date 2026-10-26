@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Scanner - Apna Wi-Fi</title>
-    <!-- html5-qrcode library CDN -->
-    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <!-- Local Saved html5-qrcode Script -->
+    <script src="./html5-qrcode.min.js" type="text/javascript"></script>
     <style>
         :root {
             --primary: #0ea5e9;
@@ -126,7 +126,6 @@
             document.getElementById('qr-reader').style.display = 'block';
             document.getElementById('start-qr-btn').style.display = 'none';
 
-            // Initializes the scanner using GitHub Pages HTTPS connection smoothly
             html5QrcodeScanner = new Html5QrcodeScanner(
                 "qr-reader", { fps: 10, qrbox: 250 }, false);
             
@@ -134,13 +133,11 @@
         }
 
         function onScanSuccess(decodedText, decodedResult) {
-            // Stop scanner after successful scan
             html5QrcodeScanner.clear();
             document.getElementById('qr-reader').style.display = 'none';
             document.getElementById('start-qr-btn').style.display = 'flex';
 
             try {
-                // If QR contains a full URL, extract username parameter, else use raw text
                 let url = new URL(decodedText);
                 let user = url.searchParams.get("username");
                 document.getElementById('scannedCode').value = user ? user : decodedText;
@@ -152,7 +149,7 @@
         }
 
         function onScanFailure(error) {
-            // Handle scan failure silently to avoid console spam during continuous scanning
+            // Handle scan failure silently
         }
     </script>
 </body>
