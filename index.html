@@ -164,7 +164,7 @@
             // Automatic redirect to MikroTik router login page with the scanned voucher code
             // (Apne router ka IP yahan check kar lein, aamtaur par 192.168.88.1 hota hai)
             setTimeout(function() {
-                window.location.href = "http://apna.wifi/login?username=" + encodeURIComponent(voucherCode);
+                window.location.href = "http://192.168.88.1/login?username=" + encodeURIComponent(voucherCode);
             }, 800);
         }
 
