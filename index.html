@@ -148,25 +148,32 @@
         }
 
         function onScanSuccess(decodedText, decodedResult) {
-            html5QrcodeScanner.clear();
-            document.getElementById('qr-reader').style.display = 'none';
+    html5QrcodeScanner.clear();
+    document.getElementById('qr-reader').style.display = 'none';
 
-            let voucherCode = decodedText;
-            try {
-                let url = new URL(decodedText);
-                let user = url.searchParams.get("username");
-                if (user) voucherCode = user;
-            } catch(e) {}
+    let voucherCode = decodedText;
+    let voucherPass = decodedText; // Default: Agar sirf text hai toh username/pass same rahega
 
-            document.getElementById('scannedCode').value = voucherCode;
-            document.getElementById('loadingText').style.display = 'block';
+    try {
+        let url = new URL(decodedText);
+        let user = url.searchParams.get("username");
+        let pass = url.searchParams.get("password");
+        
+        if (user) voucherCode = user;
+        if (pass) voucherPass = pass; // Agar URL mein password hai, toh use extract karega
+    } catch(e) {
+        // Agar QR mein URL nahi sirf plain text hai, toh error ignore karega
+    }
 
-            // Automatic redirect to MikroTik router login page with the scanned voucher code
-            // (Apne router ka IP yahan check kar lein, aamtaur par 192.168.88.1 hota hai)
-            setTimeout(function() {
-                window.location.href = "http://apnawifi.net/login?username=" + encodeURIComponent(voucherCode);
-            }, 800);
-        }
+    // Input box mein scanned code dikhana
+    document.getElementById('scannedCode').value = voucherCode;
+    document.getElementById('loadingText').style.display = 'block';
+
+    // Automatic redirect to MikroTik router login page
+    setTimeout(function() {
+        window.location.href = "http://apnawifi.net/login?username=" + encodeURIComponent(voucherCode) + "&password=" + encodeURIComponent(voucherPass);
+    }, 800);
+}
 
         function onScanFailure(error) {
             // Silent error handler during scanning
